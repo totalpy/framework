@@ -54,8 +54,8 @@ class Route:
 
 		endpoint = url[:index].strip()
 
-		if endpoint.find('*') != -1:
-			endpoint = endpoint.replace('*', '')
+		if endpoint.find('*') != -1 or endpoint.find('...') != -1:
+			endpoint = endpoint.replace('*', '').replace('...', '')
 			self.wildcard = True
 
 		path = endpoint.lower()

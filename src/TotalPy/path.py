@@ -17,6 +17,9 @@ def bundles(filename = ''):
 def databases(filename = ''):
 	return __internal('databases', filename)
 
+def modules(filename = ''):
+	return __internal('modules', filename)
+
 def public(filename = ''):
 	return __internal('public', filename)
 
@@ -46,3 +49,6 @@ def temp(filename = ''):
 
 def tmp(filename = ''):
 	return __internal('tmp', filename)
+
+def join(a, b):
+	return os.path.join(a, b)

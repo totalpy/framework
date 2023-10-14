@@ -18,9 +18,9 @@ import datetime
 import math
 import sys
 import threading
+import importlib.util
 
-directory = os.path.dirname(sys.path[0])
-
+directory = sys.path[0]
 ready = False
 
 # Configuration
@@ -36,6 +36,10 @@ resources = {}
 cache = {}
 
 internal = {
+	'controllers': {},
+	'modules': {},
+	'plugins': {},
+	'schemas': {},
 	'uid': {
 		'id': utils.random_text(1),
 		'index': 0
@@ -94,11 +98,20 @@ def service():
 	internal['service'] = index + 1
 	threading.Timer(60, service).start()
 
+class Dependency():
+	pass
+
+def inject(filename):
+	tmp = {}
+	content = open(filename).read()
+	exec(content, globals(), tmp)
+	return tmp
+
 def load(types = None):
 
 	# Load configuration
 	# Load directories
-	# Load server
+	# Load HTTP
 
 	try:
 		file = open('config', 'r')
@@ -107,6 +120,59 @@ def load(types = None):
 			config[key] = cfg[key]
 	except:
 		pass
+
+	install = []
+
+	dir = TotalPy.path.modules()
+	if os.path.isdir(dir):
+		for file in os.listdir(dir):
+			name = file.replace('.py', '')
+			tmp = inject(TotalPy.path.join(dir, file))
+			internal['modules'][name] = tmp
+			install.append(tmp)
+
+	dir = TotalPy.path.controllers()
+	if os.path.isdir(dir):
+		for file in os.listdir(dir):
+			name = file.replace('.py', '')
+			tmp = inject(TotalPy.path.join(dir, file))
+			internal['controllers'][name] = tmp
+			install.append(tmp)
+
+
+	dir = TotalPy.path.schemas()
+	if os.path.isdir(dir):
+		for file in os.listdir(dir):
+			name = file.replace('.py', '')
+			tmp = inject(TotalPy.path.join(dir, file))
+			internal['schemas'][name] = tmp
+
+	dir = TotalPy.path.plugins()
+	if os.path.isdir(dir):
+		for item in os.listdir(dir):
+
+			filename = TotalPy.path.join(TotalPy.path.join(dir, item), 'index.py')
+			isindex = os.path.isfile(filename)
+			if isindex == False:
+				continue
+
+			tmp = inject(filename)
+			internal['plugins'][dir] = tmp
+			install.append(tmp)
+
+			for dependency in ('definitions', 'schemas'):
+				subdir = TotalPy.path.join(dir, dependency)
+				if os.path.isdir(subdir):
+					for f in os.listdir(subdir):
+						inject(TotalPy.path.join(subdir, f))
+
+	for step in os.walk(TotalPy.path.definitions()):
+		for file in step[2]:
+			inject(TotalPy.path.join(step[0], file))
+
+	for mod in install:
+		if 'install' in mod:
+			print(mod.get('install')())
 
 	service()
 	routing.sort()
@@ -124,13 +190,35 @@ def reconfigure():
 def loadresource(name, data):
 	print('loadresource', name, data)
 
-def auth(callback):
-	delegates['auth'] = callback
+def auth(callback = None):
+	if callback == None:
+		def action(func):
+			delegates['auth'] = func
+	else:
+		delegates['auth'] = callback
 
-def localize(callback):
-	delegates['localize'] = callback
+def localize(callback = None):
+	if callback == None:
+		def action(func):
+			delegates['localize'] = func
+	else:
+		delegates['localize'] = callback
 
 def route(url, action = None):
+
+	# decorator
+	if action == None and url.find('*') == -1:
+		def action(func):
+
+			r = TotalPy.routing.Route(url, func)
+
+			if r.append == True:
+				routes['web'].append(r)
+
+			if ready:
+				TotalPy.routing.sort()
+
+		return action
 
 	r = TotalPy.routing.Route(url, action)
 
@@ -139,6 +227,8 @@ def route(url, action = None):
 
 	if ready:
 		TotalPy.routing.sort()
+
+endpoint = route
 
 def schema(name, declaration):
 	print('schema')

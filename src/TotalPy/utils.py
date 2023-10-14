@@ -123,8 +123,13 @@ def parseuri(path):
 	else:
 		response['pathname'] = path
 
+	response['file'] = response['pathname'].find('.', len(response['pathname']) - 8) != -1
+
+	if response['file'] == False:
+		if response['pathname'][len(response['pathname']) - 1] != '/':
+			response['pathname'] = response['pathname'] + '/'
+
 	response['url'] = response['pathname']
-	response['file'] = response['url'].find('.', len(response['url']) - 8) != -1
 	return response
 
 def parseua(value):
