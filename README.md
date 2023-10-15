@@ -26,3 +26,5 @@ python3 -m pip install .
 - [ ] Mail
 - [ ] Create `index.py.map` (map structure)
 - [ ] Create `index.py.json` (stats)
+- [ ] TotalPy.pref persistent storage
+- [ ] TotalPy.config persisten values
