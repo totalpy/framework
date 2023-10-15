@@ -1,3 +1,6 @@
+def install():
+	TotalPy.endpoint('API  /api/  +users_remove --> users/query users/remove')
+
 @TotalPy.endpoint('GET /kokotaris')
 def index(ctrl):
 	ctrl.plain('index')

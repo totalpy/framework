@@ -1,4 +1,6 @@
 # Tangular template engine
 
-def compile(value):
+import re
+
+def compile(value, tagbeg = r'\{\{', tagend = r'\}\}'):
 	pass

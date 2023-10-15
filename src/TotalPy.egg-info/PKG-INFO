@@ -33,27 +33,31 @@ Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
-# Total.py
+# Total.py web framework
+
+Coming soon.
+
+## Testing
+
+Installing TotalPy locally:
+
+```bash
+python3 -m pip install .
+```
+
+---
 
 ## Tasks
 
-- [ ] core
-	- [ ] auth built-in mechanism
-- [ ] debug/watcher
-- [ ] builders
-- [ ] bundles
-- [ ] edit
-- [ ] filestorage
-- [ ] flow
-- [ ] mail
-- [ ] nosql
-- [ ] querybuilder
-- [ ] tangular
-- [ ] utils
-	- [ ] parseuid
-	- [ ] parsedate
-	- [ ] parsejson
-	- [ ] parseconfig
-	- [ ] parsechema
-	- [ ] fast encrypt/decrypt
-- [ ] viewengine
+- [ ] Tangular template engine
+- [ ] websocket
+- [ ] QueryBuilder
+- [ ] implement `debug` mode
+- [ ] FileStorage
+- [ ] Localizations
+- [ ] NoSQL embedded
+- [ ] Bundles
+- [ ] FlowStream module + Flow
+- [ ] Mail
+- [ ] Create `index.py.map` (map structure)
+- [ ] Create `index.py.json` (stats)

@@ -50,7 +50,8 @@ class Route:
 		else:
 			action = REG_ACTION.search(url[index:])
 			if action != None:
-				self.action = re.sub(r'\{|\}|\+|-|\s', '', action[0].strip()).split('/')
+				self.action = re.sub(r'\{|\}|\+', '', re.sub(r'\s{2,}', ' ', action[0])).strip().split('-->')
+				self.action = [str.strip() for str in self.action]
 
 		endpoint = url[:index].strip()
 
@@ -90,6 +91,8 @@ class Route:
 				TotalPy.internal['routes']['api'][endpoint] = {}
 			else:
 				self.append = False
+
+			#if TotalPy.internal['routes']['api'][endpoint].get()
 			TotalPy.internal['routes']['api'][endpoint][self.action[0]] = self
 
 		for i in range(0, len(self.split)):

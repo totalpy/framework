@@ -130,4 +130,3 @@ class Schema:
 
 		# parser
 		pass
-

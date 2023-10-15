@@ -170,7 +170,7 @@ def load(types = None):
 
 	for mod in install:
 		if 'install' in mod:
-			print(mod.get('install')())
+			mod.get('install')()
 
 	service()
 	routing.sort()
@@ -205,7 +205,7 @@ def localize(callback = None):
 def route(url, action = None):
 
 	# decorator
-	if action == None and url.find('*') == -1:
+	if action == None and url.find('-->') == -1:
 		def action(func):
 
 			r = TotalPy.routing.Route(url, func)
@@ -228,8 +228,25 @@ def route(url, action = None):
 
 endpoint = route
 
-def schema(name, declaration):
-	print('schema')
+def action(meta, func = None):
+
+	if func == None:
+		def callback(func):
+			action(meta, func)
+		return callback
+
+	actions[meta['name']] = meta
+
+	if 'input' in meta:
+		meta['parsedinput'] = TotalPy.utils.parsejsonschema(meta['input'])
+
+	if 'query' in meta:
+		meta['parsedquery'] = TotalPy.utils.parsejsonschema(meta['query'])
+
+	if 'params' in meta:
+		meta['parsedparams'] = TotalPy.utils.parsejsonschema(meta['params'])
+
+	meta['callback'] = func
 
 # Unique identifier generator
 def uid():
