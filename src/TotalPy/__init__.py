@@ -2,12 +2,10 @@ import TotalPy.utils
 import TotalPy.http
 import TotalPy.nosql
 import TotalPy.flow
-import TotalPy.viewengine
 import TotalPy.tangular
 import TotalPy.edit
 import TotalPy.mail
 import TotalPy.builders
-import TotalPy.internal
 import TotalPy.filestorage
 import TotalPy.path
 import TotalPy.querybuilder
@@ -28,6 +26,8 @@ config = {
 	'name': 'Total.py',
 	'version': '1'
 }
+
+print('JEEBBO')
 
 # Resources
 resources = {}

@@ -121,8 +121,6 @@ class Schema:
 		self.schema = {}
 		self.keys = []
 
-
-
 		# name:type, enum:{enum|enum|enum}, nested:{ name:string, email:email }, array: [ name:String, email: Email ]
 
 	def validate(value, response = None):
