@@ -17,6 +17,8 @@ import math
 import sys
 import threading
 import importlib.util
+import subprocess
+import pkg_resources
 
 directory = sys.path[0]
 ready = False
@@ -98,6 +100,11 @@ def service():
 
 class Dependency():
 	pass
+
+def pipinstall(package):
+	installed = { pkg.key for pkg in pkg_resources.working_set }
+	if package not in installed:
+	    subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
 
 def inject(filename):
 	tmp = {}
