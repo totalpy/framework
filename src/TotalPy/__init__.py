@@ -27,8 +27,6 @@ config = {
 	'version': '1'
 }
 
-print('JEEBBO')
-
 # Resources
 resources = {}
 
