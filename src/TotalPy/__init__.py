@@ -235,14 +235,14 @@ def route(url, action = None):
 
 endpoint = route
 
-def action(meta, func = None):
+def action(name, meta, func = None):
 
 	if func == None:
 		def callback(func):
-			action(meta, func)
+			action(name, meta, func)
 		return callback
 
-	actions[meta['name']] = meta
+	actions[name] = meta
 
 	if 'input' in meta:
 		meta['parsedinput'] = TotalPy.utils.parsejsonschema(meta['input'])
